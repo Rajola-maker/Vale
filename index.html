@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Infinite Love Journey | Valentine Special</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+:root { --primary: #ff2e63; --dark: #0f0f0f; --accent: #f9ed69; }
+* { box-sizing: border-box; transition: all 0.5s ease-in-out; }
+body, html { margin: 0; height: 100%; font-family: 'Montserrat', sans-serif; overflow: hidden; background-color: var(--dark); color: white; }
+
+/* REVISIONS: Removed filter and brightness to ensure 100% background visibility */
+#bg-layer { 
+    position: fixed; 
+    inset: 0; 
+    background-size: cover; 
+    background-position: center; 
+    z-index: -1; 
+    filter: none; /* Effect removed as requested */
+    transition: background-image 1.2s ease-in-out; 
+}
+
+.window { display: none; width: 100%; height: 100%; padding: 20px; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
+.window.active { display: flex; animation: slideUp 0.8s ease forwards; }
+
+/* Added text shadows to ensure text is readable over the clear backgrounds */
+h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin: 0; font-style: italic; text-shadow: 2px 2px 15px rgba(0,0,0,1); }
+.romantic-text { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,1); }
+p { color: #ffffff; font-size: 1.1rem; max-width: 600px; margin: 15px 0; line-height: 1.6; font-weight: 600; text-shadow: 2px 2px 10px rgba(0,0,0,1); }
+
+.btn-group { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+button { background: rgba(0,0,0,0.7); border: 2px solid white; padding: 12px 30px; color: white; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 50px; backdrop-filter: blur(5px); }
+button:hover { background: white; color: var(--dark); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+button.special { background: var(--primary); border-color: var(--primary); animation: pulse 2s infinite; }
+
+input, textarea { background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.8); padding: 15px; color: white; border-radius: 15px; width: 100%; max-width: 350px; outline: none; margin-bottom: 10px; font-family: inherit; text-align: center; font-size: 1rem; }
+input:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.9); }
+
+.gift-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 95%; max-width: 600px; margin-top: 20px; }
+.gift-item { aspect-ratio: 1/1; background: rgba(255,46,99,0.5); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; cursor: pointer; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+.gift-item:hover { transform: scale(1.1) rotate(5deg); background: var(--primary); }
+
+#result-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 5px solid var(--accent); margin-bottom: 15px; display: none; animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+.copyright { position: absolute; bottom: 15px; font-size: 0.7rem; color: #ffffff; text-transform: uppercase; text-shadow: 1px 1px 5px #000; }
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,46,99,0.7); } 70% { box-shadow: 0 0 0 15px rgba(255,46,99,0); } 100% { box-shadow: 0 0 0 0 rgba(255,46,99,0); } }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+.floating-heart { position: absolute; color: var(--primary); pointer-events: none; z-index: 100; animation: fly 4s linear infinite; }
+@keyframes fly { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+
+@media (max-width: 600px) { h1 { font-size: 1.8rem; } .romantic-text { font-size: 1.5rem; } .gift-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+
+<audio id="romantic-music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<div id="bg-layer"></div>
+
+<div id="w1" class="window active" data-bg="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6?w=1920">
+  <div class="romantic-text">Hello Beautiful Amina...</div>
+  <h1>The Infinite Love Journey</h1>
+  <p>This journey is created specifically for you. Are you ready to open your heart to me today?</p>
+  <button onclick="startJourney()">Begin Journey ❤️</button>
+  <div class="copyright">Venocyber Valentine 2026</div>
+</div>
+
+<div id="w2" class="window" data-bg="https://images.unsplash.com/photo-1516589174184-c68526614af0?w=1920">
+  <h1>What's your name?</h1>
+  <p>Before we go any further, I want to say your name in my heart...</p>
+  <input type="text" id="v_name" placeholder="Enter your name here...">
+  <button onclick="validateNext('v_name', 'w3')">Continue</button>
+</div>
+
+<div id="w3" class="window" data-bg="https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=1920">
+  <div class="romantic-text">First Spark</div>
+  <h1>Our Memory</h1>
+  <p>Do you remember the first time our eyes met? What was it that made you smile at me?</p>
+  <textarea id="v_spark" placeholder="Tell me the truth..."></textarea>
+  <button onclick="validateNext('v_spark', 'w4')">Sweet Memory</button>
+</div>
+
+<div id="w4" class="window" data-bg="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920">
+  <h1>The Big Question</h1>
+  <p>There are 8 billion people in this world, but my heart chose you. Will you be my Valentine, Amina?</p>
+  <div class="btn-group">
+    <button class="special" onclick="next('w5')">Yes, Always ❤️</button>
+    <button onclick="next('n1')">I'm not sure...</button>
+  </div>
+</div>
+
+<div id="w5" class="window" data-bg="https://images.unsplash.com/photo-1505118380757-91f5f45d8de4?w=1920">
+  <h1>Shared Dreams</h1>
+  <p>If we were given a ticket to go anywhere in the world tonight, where would you want us to wake up?</p>
+  <input type="text" id="v_dest" placeholder="Paris, Maldives, Zanzibar...">
+  <button onclick="validateNext('v_dest', 'w6')">Take Me There</button>
+</div>
+
+<div id="w6" class="window" data-bg="https://images.unsplash.com/photo-1534531173927-aeb928d54385?w=1920">
+  <div class="romantic-text">Soul Connection</div>
+  <h1>What do you love about me?</h1>
+  <p>Everyone has their beauty, but I want to hear it from you... What captured your heart?</p>
+  <textarea id="v_like" placeholder="My smile, my voice, my soul..."></textarea>
+  <button onclick="validateNext('v_like', 'w7')">Send This To Me</button>
+</div>
+
+<div id="w7" class="window" data-bg="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=1920">
+  <h1>A Deep Secret</h1>
+  <p>Tell me one small secret about how you feel when you're near me that you've never said out loud.</p>
+  <textarea id="v_secret" placeholder="My heart beats faster when..."></textarea>
+  <button onclick="validateNext('v_secret', 'w8')">Lock the Secret</button>
+</div>
+
+<div id="w8" class="window" data-bg="https://images.unsplash.com/photo-1518193921532-c1ff1f308435?w=1920">
+  <h1>The Final Key</h1>
+  <p>To unlock your gift treasury, you must prove your love. Type "I love you" in the box below.</p>
+  <input type="text" id="v_pass" placeholder="Type it with love...">
+  <button onclick="checkPass()">Unlock Treasury</button>
+</div>
+
+<div id="w10" class="window" data-bg="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1920">
+  <h1 id="gift-h">The Treasury</h1>
+  <p>Pick one gift box, Amina. You deserve the world and more.</p>
+  <img id="result-img" src="" alt="Gift">
+  <div class="gift-grid" id="grid"></div>
+  <button id="claim" style="display:none" class="special" onclick="sendWA()">Claim Gift via WhatsApp</button>
+</div>
+
+<div id="n1" class="window" data-bg="https://images.unsplash.com/photo-1516589174184-c68526614af0?w=1920">
+  <h1>Slow and Steady</h1>
+  <p>Love shouldn't be rushed. Can we start as best friends first?</p>
+  <button onclick="next('n2')">Yes, Friends</button>
+</div>
+
+<div id="n2" class="window" data-bg="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=1920">
+  <h1>Your Final Wish</h1>
+  <p>Even if we aren't lovers today, leave me one good wish for my future.</p>
+  <textarea id="v_wish" placeholder="I wish you..."></textarea>
+  <button onclick="sendNoWA()">Submit & Goodbye</button>
+</div>
+
+<script>
+const phone = "255676195192"; 
+let wonGift = "";
+
+const setBg = (url) => document.getElementById('bg-layer').style.backgroundImage = `url('${url}')`;
+setBg(document.querySelector('.window.active').dataset.bg);
+
+function startJourney() {
+  const music = document.getElementById('romantic-music');
+  music.play().catch(e => console.log("Audio play deferred"));
+  next('w2');
+}
+
+function next(id) {
+  document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  setBg(target.dataset.bg);
+  for(let i=0; i<8; i++) spawnHeart();
+}
+
+function validateNext(inputId, nextId) {
+    const val = document.getElementById(inputId).value.trim();
+    if(val === "") {
+        alert("Amina, please don't leave this blank... tell me something ❤️");
+    } else if (val.length < 3) {
+        alert("Please write a little bit more than that...");
+    } else {
+        next(nextId);
+    }
+}
+
+function checkPass() {
+  const pass = document.getElementById('v_pass').value.toLowerCase();
+  /* Updated logic to work with "i love you rajola" */
+  if(pass.includes("i love you rajola")) {
+    next('w10'); 
+    renderGifts();
+  } else { 
+    alert("You must type 'I love you rajola' first so I can trust you ❤️"); 
+  }
+}
+
+const gifts = [
+  {n:"Luxury Ring 💍", i:"https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=400"},
+  {n:"iPhone 16 Pro 📱", i:"https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400"},
+  {n:"Dinner Date 🍽️", i:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
+  {n:"Deep Kiss 💋", i:"https://images.unsplash.com/photo-1518193921532-c1ff1f308435?w=400"},
+  {n:"Warm Hug 🤗", i:"https://images.unsplash.com/photo-1516589174184-c68526614af0?w=400"},
+  {n:"Red Roses 🌹", i:"https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=400"},
+  {n:"Cash 5000Tsh💵", i:"https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=400"},
+  {n:"Kampala Trip ✈️", i:"https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?w=400"},
+  {n:"Forever Us ❤️", i:"https://images.unsplash.com/photo-1518193921532-c1ff1f308435?w=400"},
+  {n:"Sweet Perfume 🧴", i:"https://images.unsplash.com/photo-1541643600914-78b084683601?w=400"},
+  {n:"Chocolate Box 🍫", i:"https://images.unsplash.com/photo-1549465220-1d8c9d9c4749?w=400"},
+  {n:"Secret Surprise 🎁", i:"https://images.unsplash.com/photo-1513584684032-41f21ad2e1bb?w=400"}
+];
+
+function renderGifts() {
+  const g = document.getElementById('grid'); g.innerHTML = "";
+  gifts.forEach(item => {
+    let div = document.createElement('div'); div.className = "gift-item"; div.innerHTML = "🎁";
+    div.onclick = () => {
+        wonGift = item.n; 
+        g.style.display = "none";
+        document.getElementById('gift-h').innerHTML = "You Won: <br>" + item.n;
+        const img = document.getElementById('result-img'); img.src = item.i; img.style.display = "block";
+        document.getElementById('claim').style.display = "inline-block";
+    };
+    g.appendChild(div);
+  });
+}
+
+function sendWA() {
+  const data = {
+    name: document.getElementById('v_name').value,
+    spark: document.getElementById('v_spark').value,
+    destination: document.getElementById('v_dest').value,
+    like: document.getElementById('v_like').value,
+    secret: document.getElementById('v_secret').value,
+    gift: wonGift
+  };
+
+  const msg = `*VALENTINE JOURNEY REPORT* ❤️\n\n` +
+              `*From:* ${data.name}\n` +
+              `*Our First Spark:* ${data.spark}\n` +
+              `*Decision:* SAID YES! 💍\n` +
+              `*Dream Destination:* ${data.destination}\n` +
+              `*What she loves:* ${data.like}\n` +
+              `*Her Deep Secret:* ${data.secret}\n` +
+              `*Gift Selected:* ${data.gift}\n\n` +
+              `_This is the start of our forever..._`;
+
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function sendNoWA() {
+  const name = document.getElementById('v_name').value || "Amina";
+  const wish = document.getElementById('v_wish').value;
+  const msg = `*VALENTINE REJECTION* 💔\n\n*From:* ${name}\n*Message:* Decided to stay friends.\n*Wish:* ${wish}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function spawnHeart() {
+  const h = document.createElement('div'); h.className = 'floating-heart'; h.innerHTML = '❤️';
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.fontSize = (Math.random() * 20 + 20) + 'px';
+  h.style.animationDuration = (Math.random() * 2 + 2) + 's';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 4000);
+}
+
+setInterval(spawnHeart, 1000);
+</script>
+</body>
+</html>
